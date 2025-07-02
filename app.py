@@ -26,7 +26,11 @@ canvas_result = st_canvas(
 
 if canvas_result.image_data is not None:
     # Afficher l’image dessinée (convertie en 28x28 pour le modèle)
-    img = Image.fromarray(canvas_result.image_data.astype('uint8'), 'RGBA').convert('L').resize((28, 28))
+    img = (
+        Image.fromarray(canvas_result.image_data.astype("uint8"), "RGBA")
+        .convert("L")
+        .resize((28, 28))
+    )
     st.image(img, caption="Image envoyée au modèle", width=150)
 
     # Convertir en bytes pour envoyer
@@ -40,6 +44,8 @@ if canvas_result.image_data is not None:
             response = requests.post(API_URL, files=files)
             if response.status_code == 200:
                 result = response.json()
-                st.success(f"Chiffre prédit : {result['predicted_digit']} avec confiance {result['confidence']:.2%}")
+                st.success(
+                    f"Chiffre prédit : {result['predicted_digit']} avec confiance {result['confidence']:.2%}"
+                )
             else:
                 st.error(f"Erreur API : {response.status_code} {response.text}")
